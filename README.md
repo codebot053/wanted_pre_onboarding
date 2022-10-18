@@ -32,14 +32,28 @@ Django(DRF), SQLite
 
 🔨 구현 계획
 
-API 개요
+  API 개요
 
-|Index|Method|URI|Description|
-|---|---|---|---|
-|1|GET|/post/|채용공고 목록 조회|
-|2|POST|/post/|채용공고 등록(기업)|
-|3|GET|/post/{post_id}/|채용공고 상세 조회|
-|4|PATCH|/post/{post_id}/|채용공고 수정|
-|5|DELETE|/post/{post_id}/|채용공고 삭제|
-|6|GET|/post/?search={}/|채용공고 검색|
-|7|PATCH|/post/{post_id}/apply/{user_id)|채용공고지원|
+  |Index|Method|URI|Description|
+  |---|---|---|---|
+  |1|GET|/post/|채용공고 목록 조회|
+  |2|POST|/post/|채용공고 등록(기업)|
+  |3|GET|/post/{post_id}/|채용공고 상세 조회|
+  |4|PATCH|/post/{post_id}/|채용공고 수정|
+  |5|DELETE|/post/{post_id}/|채용공고 삭제|
+  |6|GET|/post/?search={}/|채용공고 검색|
+  |7|PATCH|/post/{post_id}/apply/{user_id)|채용공고지원|
+  
+📁 커밋 컨벤션
+
+본 선행 과제의 커밋 컨벤션을 위해 gitmoji 를 도입하여 관리해 보았습니다.
+
+  |Gitmoji|Description|
+  |---|---|
+  |🎉|프로젝트 시작|
+  |✨|기능 추가|
+  |🚧|코드 수정|
+  |📝|문서 추가/수정|
+  |💡|주석 추가/작성|
+  |🐛|버그 수정|
+  |✅|테스트 추가/수정|
