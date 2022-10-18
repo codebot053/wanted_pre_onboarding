@@ -12,6 +12,7 @@ from .serializers import PostSerializer
 # Create your views here.
 
 class PostApiView(APIView):
+
     permission_classes = [permissions.AllowAny]
 
     def get(self,request):
@@ -24,4 +25,10 @@ class PostApiView(APIView):
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
+
+class PostDetailApiView(APIView):
+
+    permission_classes = [permissions.AllowAny]
+    
+    def get(self, request, pk):
+        return Response(PostSerializer(Post.objects.get(id=pk)).data, status=status.HTTP_200_OK)
