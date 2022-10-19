@@ -16,14 +16,16 @@ class PostApiView(APIView):
     permission_classes = [permissions.AllowAny]
 
     def get(self,request):
+        # querystring 에서 'search' 의 value를 통해 Post모델의 
+        # content, position의 값을 필터해 검색할 수 있는 기능을 추가
         if ('search' in request.GET):
             search = request.GET['search']
-            print(search)
             queryset = Post.objects.filter(Q(content__contains=search)|Q(position__contains=search))
             return Response(PostSerializer(queryset, many=True).data, status=status.HTTP_200_OK)
+
         return Response(PostSerializer(Post.objects.all(), many=True).data, status=status.HTTP_200_OK)
     def post(self, request):
-       
+    # 채용공고 등록 API
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
 
