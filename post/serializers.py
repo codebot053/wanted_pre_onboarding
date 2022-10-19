@@ -27,16 +27,16 @@ class PostSerializer(serializers.ModelSerializer):
         job_post.technologies_needed.add(*get_technology)
         job_post.save()
         return job_post
-
-    def validate(self, data):
-        user_id = data.get('author').id
-        user = get_user_model().objects.get(id=user_id)
-        if user.is_enterprise == False:
-            raise serializers.ValidationError(
-                detail={"error": "기업계정 사용자만 작성할 수 있습니다."},
-            )
-        return data
-        
+    def update(self, instance, validated_data):
+        # m2m으로 관계된 필드 technologies_needed 의 업데이트처리를 위해 부모클래스의 update를 상속받아 처리했습니다.
+        # 기존 값을 초기화 하고 다시 입력 받은 값을 등록합니다. 
+        if ('get_technology' in validated_data):
+            get_technology = validated_data.pop('get_technology',[])
+            instance.technologies_needed.set([])
+            instance.technologies_needed.add(*get_technology)
+            instance.save()
+        return super().update(instance, validated_data)
+    
     class Meta:
         model = Post
-        fields = ['author','company', 'position', 'job_reward', 'content', 'technologies_needed','get_technology']
+        fields = ['id','author','company', 'position', 'job_reward', 'content', 'technologies_needed','get_technology']
