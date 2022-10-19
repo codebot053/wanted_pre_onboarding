@@ -5,18 +5,23 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
 #local
-from .models import Technology, Post
+from .models import Technology, Company ,Post
 
 
 class TechnologySerializer(serializers.ModelSerializer):
     class Meta:
         model = Technology
-        fields=['name']
-
+        fields = ['name']
+class CompanySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Company
+        fields = '__all__'
 class PostSerializer(serializers.ModelSerializer):
 
     technologies_needed = TechnologySerializer(many=True,required=False, read_only=True)
+    
     get_technology = serializers.ListField(required=False)
+    
 
     # 포스팅 생성(post)
     def create(self, validated_data):
@@ -24,6 +29,7 @@ class PostSerializer(serializers.ModelSerializer):
         get_technology = validated_data.pop('get_technology',[])
         
         job_post = Post.objects.create(**validated_data)
+        
         job_post.technologies_needed.add(*get_technology)
         job_post.save()
         return job_post

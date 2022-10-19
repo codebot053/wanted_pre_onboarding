@@ -1,6 +1,6 @@
 # django
 from django.shortcuts import render, get_object_or_404
-
+from django.db.models import Q
 # DRF
 from rest_framework import permissions, status
 from rest_framework.response import Response
@@ -16,6 +16,11 @@ class PostApiView(APIView):
     permission_classes = [permissions.AllowAny]
 
     def get(self,request):
+        if ('search' in request.GET):
+            search = request.GET['search']
+            print(search)
+            queryset = Post.objects.filter(Q(content__contains=search)|Q(position__contains=search))
+            return Response(PostSerializer(queryset, many=True).data, status=status.HTTP_200_OK)
         return Response(PostSerializer(Post.objects.all(), many=True).data, status=status.HTTP_200_OK)
     def post(self, request):
        
