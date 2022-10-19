@@ -31,7 +31,18 @@ class PostDetailApiView(APIView):
     permission_classes = [permissions.AllowAny]
 
     def get(self, request, pk):
-        return Response(PostSerializer(Post.objects.get(id=pk)).data, status=status.HTTP_200_OK)
+        # 같은 회사의 다른공고 post_id를 확인할 수 있는 기능추가.
+        serializer = PostSerializer(Post.objects.get(id=pk)).data
+        company_id = Post.objects.get(id=pk).company.id
+        same_company_qs = list(Post.objects.filter(company=company_id))
+        company_list = list()
+
+        for same_company_post in same_company_qs:
+            if same_company_post.id != pk:
+                company_list.append(same_company_post.id)
+        serializer['same_company_post'] = company_list
+
+        return Response(serializer, status=status.HTTP_200_OK)
 
     def put(self, request, pk):
         post = get_object_or_404(Post,id=pk)
