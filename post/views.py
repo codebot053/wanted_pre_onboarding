@@ -25,7 +25,22 @@ class PostApiView(APIView):
 
         return Response(PostSerializer(Post.objects.all(), many=True).data, status=status.HTTP_200_OK)
     def post(self, request):
-    # 채용공고 등록 API
+        # 채용공고 등록 API
+        '''
+        Body example
+        {
+    
+            "author": 2,
+            "company": 1,
+            "position": "백엔드 개발자",
+            "job_reward": 200000,
+            "content": "원티드와 함께할 BE 개발자를 모십니다.",
+            "get_technology": [
+                1,2
+                ]
+        }
+        '''
+    
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
 
@@ -52,6 +67,19 @@ class PostDetailApiView(APIView):
         return Response(serializer, status=status.HTTP_200_OK)
 
     def put(self, request, pk):
+        '''
+        Body example
+        {
+    
+            
+            "position": "프론트엔드 개발자",
+            "job_reward": 200000,
+            "content": "원티드와 함께할 FE 개발자를 모십니다.",
+            "get_technology": [
+                1,3,5
+                ]
+        }
+        '''
         post = get_object_or_404(Post,id=pk)
         default_company = post.company.pk # 채용공고 인스턴스의 회사 pk값
         default_author = post.author.id
